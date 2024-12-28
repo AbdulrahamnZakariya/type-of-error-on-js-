@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فهم أخطاء جافا سكربت</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        h2 {
+            color: #007bff;
+        }
+        pre {
+            background-color: #eee;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        code {
+            font-family: Consolas, monospace;
+            color: #d14;
+        }
+        .output {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>فهم أخطاء جافا سكربت</h1>
+
+    <h2>1. الأخطاء النحوية (Syntax Errors)</h2>
+    <p>الأخطاء النحوية تحدث عندما لا يتبع الكود القواعد الصحيحة للغة جافا سكربت. على سبيل المثال:</p>
+    <pre><code>console.log("from script file");  // صحيح
+console.log("Hello world");   // صحيح
+console.logeC("Hello world"); // خطأ نحوي: اسم الدالة غير صحيح</code></pre>
+    <p>في الكود أعلاه، <code>console.logeC</code> هو خطأ إملائي، مما يؤدي إلى خطأ نحوي. الاسم الصحيح للدالة هو <code>console.log</code>.</p>
+
+    <h2>2. الأخطاء أثناء التشغيل (Runtime Errors)</h2>
+    <p>الأخطاء أثناء التشغيل تحدث عندما يكون الكود صحيحًا نحويًا، ولكن يحدث خطأ أثناء تنفيذ البرنامج. على سبيل المثال:</p>
+    <pre><code>console.log("الكود قد ينتج عنه أخطاء");
+
+try {
+    // كود قد يسبب خطأ
+    let result = riskyCode();  
+} catch (error) {
+    console.log("عذرًا! حدث خطأ: ", error);  // التعامل مع الخطأ
+} finally {
+    console.log("نهاية الكود");
+}</code></pre>
+    <p>في هذه الحالة، الدالة <code>riskyCode()</code> غير معرفة، مما سيؤدي إلى خطأ أثناء التشغيل. يستخدم الكود كتلة <code>try...catch</code> للتعامل مع الأخطاء بشكل لائق.</p>
+
+    <h2>3. الأخطاء المنطقية (Logical Errors)</h2>
+    <p>الأخطاء المنطقية تحدث عندما يعمل الكود بشكل صحيح نحويًا ولكنه لا يقوم بما قصدته البرمجة. على سبيل المثال:</p>
+    <pre><code>function sum(num1, num2) {
+    if (typeof num1 !== 'number') throw new Error('المعامل الأول يجب أن يكون عددًا');
+    if (typeof num2 !== 'number') throw new Error('المعامل الثاني يجب أن يكون عددًا');
+    return num1 + num2;
+}
+
+console.log(sum("1", 1));  // هذا سيؤدي إلى خطأ لأن "1" هو نص وليس عددًا</code></pre>
+    <p>في المثال أعلاه، الدالة <code>sum("1", 1)</code> ستسبب خطأ لأن المعامل الأول هو نص وليس عددًا. الدالة تتحقق من نوع المعاملات وترمي خطأ إذا لم تكن الأرقام.</p>
+
+    <h2>4. التعامل مع الأخطاء باستخدام <code>try...catch</code></h2>
+    <p>توفر جافا سكربت جملة <code>try...catch</code> للتعامل مع الأخطاء أثناء التشغيل. إليك مثالًا:</p>
+    <pre><code>try {
+    let result = sum("1", 1);  // سيؤدي إلى خطأ
+} catch (error) {
+    console.log("عذرًا! حدث خطأ: ", error);  // التعامل مع الخطأ
+} finally {
+    console.log("التنفيذ مستمر بعد التعامل مع الخطأ");
+}</code></pre>
+    <p>تلتقط كتلة <code>catch</code> الخطأ وتسمح لك بالتعامل معه، بينما تضمن كتلة <code>finally</code> أن الكود سيستمر في التنفيذ بعد التقاط الخطأ.</p>
+
+    <h2>5. اختبار الكود باستخدام زر التنفيذ</h2>
+    <button onclick="runCode()">تنفيذ الكود</button>
+    <div class="output" id="output"></div>
+
+    <script>
+        // دالة تنفيذ الكود
+        function runCode() {
+            let outputDiv = document.getElementById("output");
+            try {
+                let result = sum("1", 1);  // محاولة تنفيذ الكود الذي يحتوي على خطأ منطقي
+                outputDiv.innerHTML = "النتيجة: " + result;
+            } catch (error) {
+                outputDiv.innerHTML = "عذرًا! حدث خطأ: " + error.message;
+            } finally {
+                outputDiv.innerHTML += "<br>نهاية الكود";
+            }
+        }
+
+        function sum(num1, num2) {
+            if (typeof num1 !== 'number') throw new Error('المعامل الأول يجب أن يكون عددًا');
+            if (typeof num2 !== 'number') throw new Error('المعامل الثاني يجب أن يكون عددًا');
+            return num1 + num2;
+        }
+    </script>
+
+</body>
+</html>
